@@ -1,4 +1,4 @@
-import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
+import {Given, Then} from "@badeball/cypress-cucumber-preprocessor";
 import Login from "../../../services/login.cy";
 
 let response;
@@ -15,3 +15,8 @@ Given(
 Then("the response status should be {int}", (statusCode) => {
     expect(response.status).to.eq(statusCode);
 });
+
+Then("the response body should contain {string}", (message) => {
+    expect(response.body).to.include(message);
+});
+
