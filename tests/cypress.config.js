@@ -18,6 +18,7 @@ async function setupNodeEvents(on, config) {
   );
 
   allureCypress(on, config);
+
   return config;
 }
 
@@ -25,7 +26,7 @@ module.exports = defineConfig({
   e2e: {
     specPattern: "**/*.feature",
     setupNodeEvents,
-    baseUrlUI: "http://localhost:3000",
+    baseUrl: "https://opensource-demo.orangehrmlive.com/",
     baseUrlAPI: "http://localhost:7081",
     chromeWebSecurity: false,
   },

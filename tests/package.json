@@ -1,24 +1,22 @@
 {
   "name": "tests",
   "version": "1.0.0",
-  "description": "itqa assignmnet",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cypress open",
+    "test:ci:record": "run-p --race start e2e:record"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": false,
-    "stepDefinitions": "cypress/e2e/Tests/[filepath].{cy.js,ts}"
+    "stepDefinitions": "cypress/e2e/tests/**/**/*.{cy.js,ts}"
   },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^21.0.3",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.4",
-    "cypress": "^13.17.0",
     "allure-cypress": "^3.0.7",
-    "cypress-plugin-api": "^2.11.2",
-    "esbuild": "^0.24.2"
+    "cypress": "^13.17.0"
   }
 }
