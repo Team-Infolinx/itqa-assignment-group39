@@ -21,27 +21,26 @@ Given("a valid book ID exists", () => {
     author: "Test Author",
   };
 
-  // Create a valid book to get its ID
   Books.addOneBook(bookData).then((res) => {
-    expect(res.status).to.equal(201); // Verify book creation
-    bookId = res.body.id; // Save the book ID for later use
+    expect(res.status).to.equal(201);
+    bookId = res.body.id;
   });
 });
 
 Given("a non-existent book ID is provided", () => {
-  bookId = 99999; // Use a non-existent book ID
+  bookId = 99999;
 });
 
 Given("an invalid book ID is provided", () => {
-  bookId = "invalidId"; // Invalid format, should be an integer
+  bookId = "invalidId";
 });
 
 Given("no book ID is provided", () => {
-  bookId = undefined; // No ID for this case
+  bookId = undefined;
 });
 
 Given("a book with a string ID is provided", () => {
-  bookId = "123abc"; // Invalid format
+  bookId = "123abc";
 });
 
 When("the user fetches the book details with the ID", () => {
