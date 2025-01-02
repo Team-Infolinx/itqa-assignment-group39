@@ -1,7 +1,7 @@
 {
   "name": "tests",
   "version": "1.0.0",
-  "description": "",
+  "description": "itqa assignmnet",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,16 +9,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": false,
+    "stepDefinitions": "cypress/e2e/Tests/[filepath].{cy.js,ts}"
+  },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^21.0.3",
-    "@cypress/browserify-preprocessor": "^3.0.2",
-    "cypress": "^13.17.0"
-  },
-  "dependencies": {
-    "cypress-cucumber-preprocessor": "^4.3.1"
-  },
-  "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true,
-    "step_definitions": "cypress/e2e/step_definitions"
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.4",
+    "cypress": "^13.17.0",
+    "allure-cypress": "^3.0.7",
+    "cypress-plugin-api": "^2.11.2",
+    "esbuild": "^0.24.2"
   }
 }
