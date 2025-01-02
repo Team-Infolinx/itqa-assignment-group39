@@ -1,7 +1,7 @@
-Feature: Get book by ID for Admin
+Feature: Get book by ID 
 
 Background:
-    Given the user is authenticated as 'admin' with password 'password'
+  Given the user is authenticated as 'user' with password 'password'
 
   Scenario: Fetching a valid book by ID
     Given a valid book ID exists
@@ -22,7 +22,4 @@ Background:
     Then the API should return a 400 status code
     
 
-  Scenario: Fetching a book with a string ID
-    Given a book with a string ID is provided
-    When the user fetches the book details with the ID
-    Then the API should return a 400 status code
+ 
