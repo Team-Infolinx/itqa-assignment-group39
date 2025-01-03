@@ -5,16 +5,6 @@ import Login from "../../../services/login.cy";
 let bookId;
 let response;
 
-Given(
-  "the user is authenticated as {string} with password {string}",
-  (userRole, password) => {
-    cy.log(`Authenticating as ${userRole}...`);
-    Login.loginUser(userRole, password).then((res) => {
-      response = res;
-    });
-  }
-);
-
 Given("a user is not authenticated", () => {
   window.localStorage.removeItem("auth_token");
 });

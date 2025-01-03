@@ -36,11 +36,38 @@ class Books {
   }
 
   deleteBook(bookId, authHeader) {
+    if (bookId === undefined || bookId === null) {
+      return cy.request({
+        method: "DELETE",
+        url: baseUrl + "/api/books",
+        headers: authHeader,
+        failOnStatusCode: false,
+      });
+    }
     return cy.request({
       method: "DELETE",
       url: baseUrl + "/api/books/" + bookId,
       headers: authHeader,
       failOnStatusCode: false,
+    });
+  }
+
+  updateBook(bookId, bookData, authToken) {
+    // Ensure bookId is provided, otherwise return an error message
+    if (!bookId) {
+      return cy.wrap({ status: 400, body: { message: "Missing book ID" } });
+    }
+  
+    // Send PUT request to update the book with the authorization token
+    return cy.request({
+      method: "PUT",
+      url: baseUrl + "/api/books/" + bookId,
+      headers: { Authorization: `Bearer ${authToken}` },
+      body: bookData,
+      failOnStatusCode: false,
+    }).then((res) => {
+      console.log(res); // Log the full response for debugging
+      return res;
     });
   }
 }
