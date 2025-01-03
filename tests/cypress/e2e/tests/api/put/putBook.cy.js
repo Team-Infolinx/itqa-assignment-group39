@@ -105,26 +105,21 @@ Then("the book data should be updated in the system", () => {
 });
 
 Then("the response should indicate that the book id is not matched", () => {
-  expect(response.body).to.have.property("message");
-  expect(response.body.message).to.equal("Book not found");
+  expect(response.body).to.equal("Book not found");
 });
 
 Then("the response should contain an error message for invalid data", () => {
-  expect(response.body).to.have.property("message");
-  expect(response.body.message).to.equal("Invalid data provided");
+  expect(response.body).to.equal("Invalid data provided");
 });
 
 Then("the response should contain an error message for missing book ID", () => {
-  expect(response.body).to.have.property("message");
-  expect(response.body.message).to.equal("Missing book ID");
+  expect(response.body).to.equal("Missing book ID");
 });
 
 Then("the response should contain an error message for invalid book ID", () => {
-  expect(response.body).to.have.property("message");
-  expect(response.body.message).to.equal("Invalid book ID");
+  expect(response.body).to.equal("Invalid book ID");
 });
 
 Then("the response should contain an error message for missing required fields", () => {
-  expect(response.body).to.have.property("message");
-  expect(response.body.message).to.equal("Missing required field: title");
+  expect(response.body).to.equal("Missing required field: title");
 });
