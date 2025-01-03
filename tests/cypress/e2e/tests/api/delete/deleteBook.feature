@@ -34,3 +34,21 @@ Scenario: Attempt to Remove a book with an invalid ID format
     | admin    | 400        |
     | user     | 403        |
 
+
+Scenario: A user attempts to delete a book without being authenticated
+    Given a user is not authenticated
+    When the user attempts to DELETE a book with ID 1
+    Then the server should return a status code of 401
+
+
+Scenario: Attempt to Remove a Book Without Passing an ID
+    Given User with role "<userRole>" is authenticated with password "password"
+    When the user tries to DELETE a book without passing an ID
+    Then backend server should return a status code of <statusCode> based on user role permissions
+
+  Examples:
+    | userRole  | statusCode |
+    | admin     | 405        |
+    | user      | 405        |
+
+

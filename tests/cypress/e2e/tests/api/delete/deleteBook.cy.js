@@ -86,3 +86,42 @@ Then(
     expect(response.status).to.be.equal(expectedStatusCode);
   }
 );
+
+// Scenario: Attempt to Remove a Book Without Authentication
+Given("a user is not authenticated", () => {
+  window.localStorage.removeItem("auth_token");
+});
+
+When("the user attempts to DELETE a book with ID {int}", (bookId) => {
+  books.deleteBook(bookId).then((res) => {
+    response = res;
+  });
+});
+
+Then(
+  "the server should return a status code of {int}",
+  (expectedStatusCode) => {
+    expect(response.status).to.be.equal(expectedStatusCode);
+  }
+);
+
+// Scenario: Attempt to Remove a Book Without Passing an ID
+Given(
+  "User with role {string} is authenticated with password {string}",
+  (userRole, password) => {
+    Login.loginUser(userRole, password);
+  }
+);
+
+When("the user tries to DELETE a book without passing an ID", (bookId) => {
+  books.deleteBook(bookId).then((res) => {
+    response = res;
+  });
+});
+
+Then(
+  "backend server should return a status code of {int} based on user role permissions",
+  (expectedStatusCode) => {
+    expect(response.status).to.be.equal(expectedStatusCode);
+  }
+);
