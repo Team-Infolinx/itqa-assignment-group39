@@ -18,38 +18,32 @@ jobs:
       # Step 1: Check out the repository
       - uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
+      # Step 2: Set up Node.js in the 'tests' directory
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+        working-directory: ./tests  # Ensure the setup-node is done in the 'tests' folder
 
-      # Step 3: Change to the tests directory
-      - name: Change working directory
-        working-directory: ./tests
-        run: echo "Switched to tests directory"
-
-      # Step 4: Install dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
-        working-directory: ./tests
+        working-directory: ./tests  # Ensure we're in the 'tests' folder
         run: |
-          npm ci
-          # Install Cypress if not already installed
-          npx cypress install
+          npm ci  # Install dependencies from 'tests/package-lock.json'
+          npx cypress install  # Install Cypress if not already installed
 
-      # Step 5: Set up Allure commandline
+      # Step 4: Set up Allure commandline in the 'tests' folder
       - name: Set up Allure commandline
-        working-directory: ./tests
+        working-directory: ./tests  # Ensure we are in the 'tests' folder
         run: npm install -g allure-commandline
 
-      # Step 6: Run Cypress tests
+      # Step 5: Run Cypress tests
       - name: Run Cypress tests
-        working-directory: ./tests
+        working-directory: ./tests  # Ensure we are in the 'tests' folder
         run: |
           npx cypress run --reporter mocha-allure-reporter
 
-      # Step 7: Upload test results
+      # Step 6: Upload test results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
