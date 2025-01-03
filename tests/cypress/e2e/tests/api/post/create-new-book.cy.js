@@ -1,12 +1,40 @@
 import {Given, Then} from "@badeball/cypress-cucumber-preprocessor";
 import login from "../../../services/login.cy";
+import Login from "../../../services/login.cy";
 import Books from "../../../services/books.cy";
 
 let response;
 
+const addBook = (bookData) => {
+    return Books.addBook(bookData).then((res) => {
+        response = res;
+    });
+};
+
+const deleteBook = (bookId) => {
+    return Books.deleteBook(bookId).then((res) => {
+        cy.log(`Book with ID ${bookId} deleted.`);
+    });
+};
+
 Given("user is logged into the service", () => {
     login.loginUser("admin", "password").then((res) => {
         response = res;
+    });
+});
+
+Given("user sends a POST request to add the following book with user role:", (dataTable) => {
+    const books = dataTable.hashes();
+    books.forEach((book) => {
+        const bookData = {
+            id: parseInt(book.id, 10), // Convert id to a number
+            title: book.title,
+            author: book.author,
+        };
+
+        Books.addBook(bookData).then((res) => {
+            response = res;
+        });
     });
 });
 
@@ -36,6 +64,13 @@ Given(
         });
     }
 );
+
+Then("the created book should be deleted", () => {
+    Login.loginUser("user", "password").then(() => {
+        const bookId = response.body.id;
+        deleteBook(bookId);
+    });
+});
 
 Then("the insert response status should be {int}", (statusCode) => {
     expect(response.status).to.eq(statusCode);

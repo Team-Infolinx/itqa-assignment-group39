@@ -3,49 +3,62 @@ Feature: API Testing to Insert Books Data
   Background:
     Given user is logged into the service
 
-  Scenario: Insert new book using POST request
-    Given user sends a POST request to add the following book:
-      | id | title         | author |
-      | 1  | "Sample Book" | "John" |
+  Scenario Outline: Insert new book using POST request
+    Given the user is authenticated as "<userRole>" with password "password"
+    And user sends a POST request to add the following book with user role:
+      | id       | title       | author   |
+      | <bookId> | <bookTitle> | <author> |
     Then the insert response status should be 201
-    And the response should contain the book data with title "Sample Book" and author "John"
+    And the response should contain the book data with title "<bookTitle>" and author "<author>"
+    And the created book should be deleted
+
+    Examples:
+      | userRole | bookId | bookTitle    | author  |
+      | admin    | 1      | Admin_Book_1 | Admin_1 |
+      | user     | 2      | User_Book_1  | User_1  |
 
   Scenario: Insert book with missing title
     Given user sends a POST request to add the following book:
       | id | title | author |
-      | 2  |       | "John" |
+      | 3  |       | "John" |
     Then the insert response status should be 400
+    And the created book should be deleted
 
   Scenario: Insert book with missing author
     Given user sends a POST request to add the following book:
-      | id | title         | author |
-      | 3  | "Sample Book" |        |
+      | id | title    | author |
+      | 4  | "Book_2" |        |
     Then the insert response status should be 400
+    And the created book should be deleted
 
   Scenario: Insert book with duplicate id
     Given user sends a POST request to add the following book:
-      | id | title          | author |
-      | 1  | "Another Book" | "Jane" |
+      | id | title    | author |
+      | 5  | "Book_3" | "Jane" |
     Then the insert response status should be 409
     And the response should contain an error message "Book Already Exists"
+    And the created book should be deleted
 
   Scenario: Insert book with an invalid id type
     Given user sends a POST request to add the following book:
-      | id    | title       | author  |
-      | "abc" | "Test Book" | "Alice" |
+      | id    | title    | author  |
+      | "abc" | "Book_4" | "Alice" |
     Then the insert response status should be 400
+    And the created book should be deleted
 
   Scenario: Insert book without id (auto-generate id)
     Given user sends a POST request to add the following book:
-      | id | title       | author  |
-      |    | "Auto Book" | "Chris" |
+      | id | title    | author  |
+      |    | "Book_5" | "Chris" |
     Then the insert response status should be 201
-    And the response should contain the book data with title "Auto Book" and author "Chris"
+    And the response should contain the book data with title "Book_5" and author "Chris"
+    And the created book should be deleted
 
   Scenario: Insert book with a specific id
     Given user sends a POST request to add the following book:
-      | id   | title              | author     |
-      | 1000 | "Specific Book ID" | "Author X" |
+      | id   | title    | author     |
+      | 1000 | "Book_6" | "Author X" |
     Then the insert response status should be 201
-    And the response should contain the book data with title "Specific Book ID" and author "Author X"
+    And the response should contain the book data with title "Book_6" and author "Author X"
     And the response should contain the id 1000
+    And the created book should be deleted
