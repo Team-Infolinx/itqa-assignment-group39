@@ -10,11 +10,6 @@ When("I click on Delete confirmation button", () => {
     DeleteEmployee.clickConfirmationDeleteButton();
 });
 
-Then("I see Toast massage with {string}", (message) => {
-    DeleteEmployee.seeToast(message);
-});
-
-
 
 
 
