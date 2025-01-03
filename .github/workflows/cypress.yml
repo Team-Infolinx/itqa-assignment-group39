@@ -38,8 +38,9 @@ jobs:
 
       # Step 5: Start the API server (before running Cypress tests)
       - name: Start API Server
+        working-directory: ./tests
         run: |
-          nohup java -jar /src/api/demo-0.0.1-SNAPSHOT.jar &  # Start the API server in the background
+          nohup java -jar ./src/api/demo-0.0.1-SNAPSHOT.jar &  # Start the API server in the background
           sleep 30  # Wait for 30 seconds to allow the server to start
 
       # Step 6: Run Cypress tests
