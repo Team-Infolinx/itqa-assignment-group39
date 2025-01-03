@@ -27,6 +27,7 @@ jobs:
       # Step 2: Install dependencies
       - name: Install dependencies
         run: |
+          cd tests
           npm ci
           # Install Cypress and any other dependencies for your tests
           npx cypress install
@@ -38,6 +39,7 @@ jobs:
       # Step 4: Run Cypress tests (both UI and API)
       - name: Run Cypress tests
         run: |
+          cd tests
           npx cypress run --reporter mocha-allure-reporter
 
       # Step 5: Upload the test results
