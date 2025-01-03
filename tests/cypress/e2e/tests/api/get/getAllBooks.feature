@@ -4,7 +4,7 @@ Feature: Get all books
     Given the user is authenticated as "<userRole>" with password "password"
     And multiple books exist in the system
     When the user fetches all books
-    Then the get all API should return a 200 status code
+    Then the API should return a 200 status code
     And the response should contain an array of books
     And each book should have an "id", "title", and "author" property
 
@@ -18,7 +18,7 @@ Feature: Get all books
     Given no books exist in the system
     And the user is authenticated as "<userRole>" with password "password"
     When the user fetches all books
-    Then the get all API should return a 200 status code
+    Then the API should return a 200 status code
     And the response should contain an empty list of books
 
   Examples:

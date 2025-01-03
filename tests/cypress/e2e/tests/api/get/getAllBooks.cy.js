@@ -46,10 +46,6 @@ When("the user fetches all books", () => {
   });
 });
 
-Then("the get all API should return a {int} status code", (statusCode) => {
-  expect(response.status).to.equal(statusCode);
-});
-
 Then("the response should contain an error message", () => {
   expect(response.body).to.have.property("message");
   expect(response.body.message).to.equal("Unauthorized access");
