@@ -36,13 +36,19 @@ jobs:
         working-directory: ./tests  # Switch to the 'tests' directory
         run: npm install -g allure-commandline
 
-      # Step 5: Run Cypress tests
+      # Step 5: Start the API server (before running Cypress tests)
+      - name: Start API Server
+        run: |
+          nohup java -jar ./src/api/demo-0.0.1-SNAPSHOT.jar &  # Start the API server in the background
+          sleep 30  # Wait for 30 seconds to allow the server to start
+
+      # Step 6: Run Cypress tests
       - name: Run Cypress tests
         working-directory: ./tests  # Switch to the 'tests' directory
         run: |
-          npx cypress run
+          npx cypress run  # Run the Cypress tests
 
-      # Step 6: Upload test results
+      # Step 7: Upload test results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
