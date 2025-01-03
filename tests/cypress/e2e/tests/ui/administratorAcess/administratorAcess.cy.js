@@ -1,4 +1,4 @@
-import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
+import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import AdminAccessPage from '../../../page-objects/administarorAcessPage.cy';
 
 
