@@ -2,7 +2,6 @@ import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import Login from "../../../services/login.cy";
 import books from "../../../services/books.cy";
 
-let authHeader = {};
 let bookId = 0;
 let titleNumber = 0;
 let response = {};
@@ -37,8 +36,8 @@ Then(
   }
 );
 
-// Scenario 2: User tries to remove a book without authorization
-Given("the user tries to remove a book without authorization", () => {
+// Scenario 2: User tries to remove a book
+Given("the user is logged and a book with a specific ID", () => {
   Login.loginUser("user", "password");
 });
 
@@ -66,13 +65,13 @@ Then(
   }
 );
 
-// Scenario 3: Removing a book that doesn’t exist
+// Scenario 3: Removing a book that doesn’t exist by admin
 Given("the admin is logged in to manage books", () => {
   Login.loginUser("admin", "password");
 });
 
 When("the admin attempts to DELETE a book that does not exist", () => {
-  books.deleteBook(9999).then((res) => {
+  books.deleteBook(100000).then((res) => {
     response = res;
   });
 });
@@ -84,13 +83,13 @@ Then(
   }
 );
 
-// Scenario 4: Deleting a book with an invalid ID as a regular user
+// Scenario 4: Deleting a book with an invalid ID as a user
 Given("deleting a book with an invalid ID as a regular user", () => {
   Login.loginUser("user", "password");
 });
 
 When("the user sends a DELETE request with an invalid book ID", () => {
-  books.deleteBook(9999).then((res) => {
+  books.deleteBook(100000).then((res) => {
     response = res;
   });
 });
