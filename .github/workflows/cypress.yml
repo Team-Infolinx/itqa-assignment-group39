@@ -24,22 +24,24 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      # Step 2: Install dependencies
+      # Step 2: Install dependencies (with `cd` into the tests folder)
       - name: Install dependencies
         run: |
-          cd tests
-          npm ci
+          cd tests  # Change to the 'tests' folder
+          npm ci    # Install dependencies from package-lock.json in 'tests' folder
           # Install Cypress and any other dependencies for your tests
           npx cypress install
 
       # Step 3: Set up Allure Report
       - name: Set up Allure commandline
-        run: npm install -g allure-commandline
+        run: |
+          cd tests  # Change to the 'tests' folder
+          npm install -g allure-commandline
 
       # Step 4: Run Cypress tests (both UI and API)
       - name: Run Cypress tests
         run: |
-          cd tests
+          cd tests  # Change to the 'tests' folder
           npx cypress run --reporter mocha-allure-reporter
 
       # Step 5: Upload the test results
@@ -49,8 +51,8 @@ jobs:
         with:
           name: cypress-test-results
           path: |
-            cypress/results/allure-report/
-            cypress/results/*.json
+            tests/cypress/results/allure-report/
+            tests/cypress/results/*.json
 
   generate-report:
     needs: tests
