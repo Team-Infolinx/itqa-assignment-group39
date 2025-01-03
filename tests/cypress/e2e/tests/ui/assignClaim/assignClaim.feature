@@ -8,7 +8,7 @@ Feature: Assign Claim
 
   Scenario: Assign a new claim to an employee
     Given I am on the assign claim page
-    When I enter employee name "Jennifer Ratna Aniston"
+    When I enter employee name "Salinda Yasas Meegoda"
     And I select event "Accommodation"
     And I select currency "Albanian Lek"
     And I enter remarks "Salary Increments"
@@ -16,7 +16,7 @@ Feature: Assign Claim
 
   Scenario: CancelSuccessfully claim assignment
     Given I am on the assign claim page
-    When I enter employee name "Jennifer Ratna Aniston"
+    When I enter employee name "Salinda Yasas Meegoda"
     And I select event "Accommodation"
     Then I click Cancel button
 
