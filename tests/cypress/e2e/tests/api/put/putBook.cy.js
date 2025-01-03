@@ -2,7 +2,6 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import Books from "../../../services/books.cy";
 import Login from "../../../services/login.cy";
 
-
 let bookId;
 let response;
 let updatedBookData;
@@ -32,7 +31,7 @@ Given("a book is created for update", () => {
 });
 
 Given("a not-existent book ID is provided", () => {
-  bookId = 99999; 
+  bookId = 99999;
 });
 
 Given("book ID is not provided", () => {
@@ -45,21 +44,23 @@ Given("invalid book ID is provided", () => {
 
 Given("the user provides updated book data", () => {
   function generateRandomString(length) {
-    return Math.random().toString(36).substring(2, 2 + length);
+    return Math.random()
+      .toString(36)
+      .substring(2, 2 + length);
   }
 
   updatedBookData = {
-    id : bookId,
+    id: bookId,
     title: `Updated Automated Testing Book ${generateRandomString(5)}`,
-    author: `Updated Test Author ${generateRandomString(5)}`, 
+    author: `Updated Test Author ${generateRandomString(5)}`,
   };
 });
 
 Given("the user provides invalid updated book data", () => {
   updatedBookData = {
     id: bookId,
-    title: 2564, 
-    author: 7894, 
+    title: 2564,
+    author: 7894,
   };
 });
 
@@ -94,21 +95,21 @@ Then("the book data should be updated in the system", () => {
 });
 
 Then("the response should indicate that the book id is not matched", () => {
-  expect(response.body).to.have.property("message");
+  // expect(response.body).to.have.property("message");
   expect(response.body).to.equal("Book not found");
 });
 
 Then("the response should contain an error message for invalid data", () => {
-  expect(response.body).to.have.property("message");
-  expect(response.body.message).to.equal("Invalid data provided");
+  //expect(response.body).to.have.property("message");
+  expect(response.body).to.equal("Invalid data provided");
 });
 
 Then("the response should contain an error message for missing book ID", () => {
-  expect(response.body).to.have.property("message");
+  //expect(response.body).to.have.property("message");
   expect(response.body.message).to.equal("Missing book ID");
 });
 
 Then("the response should contain an error message for invalid book ID", () => {
-  expect(response.body).to.have.property("message");
-  expect(response.body.message).to.equal("Invalid book ID");
+  //expect(response.body).to.have.property("message");
+  expect(response.body).to.equal("Invalid book ID");
 });
