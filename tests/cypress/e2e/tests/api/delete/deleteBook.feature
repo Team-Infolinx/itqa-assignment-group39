@@ -3,22 +3,34 @@ Feature: Remove a Book from the Database
   I need to remove a book using the API
   So that I can manage book records or handle errors for invalid deletions
 
-  Scenario: Successfully remove a book as an admin
-    Given a book is available with a specific ID
-    When the admin performs a DELETE operation
-    Then the server should return a status code of 204 after admin DELETE
+Scenario: Successfully remove a book based on user role permissions
+  Given a book is available with a specific ID and user is authenticated as as "<userRole>" with password "password"
+  When the user performs a DELETE operation
+  Then the server should return a status code of <statusCode> based on the user role "<userRole>"
 
-  Scenario: User tries to remove a book
-    Given the user is logged and a book with a specific ID 
-    When the user attempts to perform a DELETE operation
-    Then the server should return a status code of 403 after user DELETE attempt
+  Examples:
+    | userRole | statusCode |
+    | admin    | 204        |
+    | user     | 403        |
 
-  Scenario: Removing a book that doesn’t exist by admin
-    Given the admin is logged in to manage books
-    When the admin attempts to DELETE a book that does not exist
-    Then the server should return a status code of 404 for non-existent book
 
-  Scenario: Deleting a book with an invalid ID as a user
-    Given deleting a book with an invalid ID as a regular user
-    When the user sends a DELETE request with an invalid book ID
-    Then the response status code must be 403 for invalid book ID
+Scenario: Attempt to Remove a Non-Existent Book Based on User Role Permissions
+    Given a user with role "<userRole>" is authenticated with password "password"
+    When the user attempts to DELETE a book that does not exist
+    Then the server should return a status code of <statusCode> based on user role permissions
+
+  Examples:
+    | userRole | statusCode |
+    | admin    | 404        |
+    | user     | 403        |
+
+Scenario: Attempt to Remove a book with an invalid ID format
+    Given for a specific book a user with role "<userRole>" is authenticated with password "password"
+    When the user attempts to DELETE a book with an invalid ID format
+    Then the backend server should return a status code of <statusCode> based on user role permissions
+
+  Examples:
+    | userRole | statusCode |
+    | admin    | 400        |
+    | user     | 403        |
+

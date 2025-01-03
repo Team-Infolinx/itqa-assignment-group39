@@ -3,100 +3,86 @@ import Login from "../../../services/login.cy";
 import books from "../../../services/books.cy";
 
 let bookId = 0;
-let titleNumber = 0;
 let response = {};
 
-// Scenario 1: Successfully remove a book as admin
-Given("a book is available with a specific ID", () => {
-  titleNumber = Math.floor(Math.random() * 1000);
-  Login.loginUser("user", "password");
-  books
-    .addBook({
-      id: 1,
-      title: "Sample Book " + titleNumber,
-      author: "Sample Author",
-    })
-    .then((response) => {
-      bookId = response.body.id;
-      expect(response.status).to.be.oneOf([201, 200]);
-    });
-});
+// Scenario: Successfully remove a book based on user role permissions
+Given(
+  "a book is available with a specific ID and user is authenticated as as {string} with password {string}",
+  (userRole, password) => {
+    const titleNumber = Math.floor(Math.random() * 1000);
 
-When("the admin performs a DELETE operation", () => {
-  Login.loginUser("admin", "password");
+    Login.loginUser(userRole, password);
+
+    books
+      .addBook({
+        id: 1,
+        title: `Sample Book ${titleNumber}`,
+        author: "Sample Author",
+      })
+      .then((response) => {
+        bookId = response.body.id;
+        expect(response.status).to.be.oneOf([201, 200]);
+      });
+  }
+);
+
+When("the user performs a DELETE operation", () => {
   books.deleteBook(bookId).then((res) => {
     response = res;
   });
 });
 
 Then(
-  "the server should return a status code of {int} after admin DELETE",
-  (statusCode) => {
-    expect(response.status).to.be.equal(statusCode);
+  "the server should return a status code of {int} based on the user role {string}",
+  (expectedStatusCode, userRole) => {
+    if (userRole === "admin") {
+      expect(response.status).to.be.equal(204);
+    } else if (userRole === "user") {
+      expect(response.status).to.be.equal(403);
+    } else {
+      throw new Error("Unexpected user role");
+    }
   }
 );
 
-// Scenario 2: User tries to remove a book
-Given("the user is logged and a book with a specific ID", () => {
-  Login.loginUser("user", "password");
-});
-
-When("the user attempts to perform a DELETE operation", () => {
-  titleNumber = Math.floor(Math.random() * 1000);
-  books
-    .addBook({
-      id: 1,
-      title: "Sample Book " + titleNumber,
-      author: "Sample Author",
-    })
-    .then((response) => {
-      bookId = response.body.id;
-      expect(response.status).to.be.equal(201);
-    });
-  books.deleteBook(bookId).then((res) => {
-    response = res;
-  });
-});
-
-Then(
-  "the server should return a status code of {int} after user DELETE attempt",
-  (statusCode) => {
-    expect(response.status).to.be.equal(statusCode);
+// Scenario: Attempt to Remove a Non-Existent Book Based on User Role Permissions
+Given(
+  "a user with role {string} is authenticated with password {string}",
+  (userRole, password) => {
+    Login.loginUser(userRole, password);
   }
 );
 
-// Scenario 3: Removing a book that doesn’t exist by admin
-Given("the admin is logged in to manage books", () => {
-  Login.loginUser("admin", "password");
-});
-
-When("the admin attempts to DELETE a book that does not exist", () => {
+When("the user attempts to DELETE a book that does not exist", () => {
   books.deleteBook(100000).then((res) => {
     response = res;
   });
 });
 
 Then(
-  "the server should return a status code of {int} for non-existent book",
-  (statusCode) => {
-    expect(response.status).to.be.equal(statusCode);
+  "the server should return a status code of {int} based on user role permissions",
+  (expectedStatusCode) => {
+    expect(response.status).to.be.equal(expectedStatusCode);
   }
 );
 
-// Scenario 4: Deleting a book with an invalid ID as a user
-Given("deleting a book with an invalid ID as a regular user", () => {
-  Login.loginUser("user", "password");
-});
+// Scenario: Attempt to Remove a Book with an Invalid ID Format
+Given(
+  "for a specific book a user with role {string} is authenticated with password {string}",
+  (userRole, password) => {
+    Login.loginUser(userRole, password);
+  }
+);
 
-When("the user sends a DELETE request with an invalid book ID", () => {
-  books.deleteBook(100000).then((res) => {
+When("the user attempts to DELETE a book with an invalid ID format", () => {
+  books.deleteBook("invalid-id").then((res) => {
     response = res;
   });
 });
 
 Then(
-  "the response status code must be {int} for invalid book ID",
-  (statusCode) => {
-    expect(response.status).to.be.equal(statusCode);
+  "the backend server should return a status code of {int} based on user role permissions",
+  (expectedStatusCode) => {
+    expect(response.status).to.be.equal(expectedStatusCode);
   }
 );
