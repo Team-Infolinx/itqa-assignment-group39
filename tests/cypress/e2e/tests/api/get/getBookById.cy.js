@@ -50,7 +50,7 @@ When("the user fetches the book details with the ID", () => {
   });
 });
 
-Then("the API should return a {int} status code", (statusCode) => {
+Then("the get by Id API should return a {int} status code", (statusCode) => {
   expect(response.status).to.equal(statusCode);
 });
 
