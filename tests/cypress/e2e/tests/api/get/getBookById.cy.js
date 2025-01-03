@@ -5,15 +5,9 @@ import Login from "../../../services/login.cy";
 let bookId;
 let response;
 
-Given(
-  "the user is authenticated as {string} with password {string}",
-  (userRole, password) => {
-    cy.log(`Authenticating as ${userRole}...`);
-    Login.loginUser(userRole, password).then((res) => {
-      response = res;
-    });
-  }
-);
+Given("a user is not authenticated for get API", () => {
+  window.localStorage.removeItem("auth_token");
+});
 
 Given("a valid book ID exists", () => {
   titleNUmber = Math.floor(Math.random() * 1000);
@@ -50,7 +44,7 @@ When("the user fetches the book details with the ID", () => {
   });
 });
 
-Then("the API should return a {int} status code", (statusCode) => {
+Then("the get by Id API should return a {int} status code", (statusCode) => {
   expect(response.status).to.equal(statusCode);
 });
 
