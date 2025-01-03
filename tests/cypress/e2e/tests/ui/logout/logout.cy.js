@@ -1,5 +1,5 @@
 import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import LoginAsValidUser from "../hooks";
+import LoginAsValidUser from "../hooks.cy";
 import LogoutPage from "../../../page-objects/logoutPage.cy";
 
 Given("I am logged into the application", () => {
