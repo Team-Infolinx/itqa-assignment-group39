@@ -3,12 +3,24 @@ import Login from "../../../services/login.cy";
 
 let response;
 
+const sendLoginRequest = (username, password) => {
+    return Login.loginUser(username, password).then((res) => {
+        response = res;
+    });
+};
+
 Given(
     "I send a POST request to login with username {string} and password {string}",
     (username, password) => {
-        Login.loginUser(username, password).then((res) => {
-            response = res;
-        });
+        sendLoginRequest(username, password);
+    }
+);
+
+Given(
+    "the user is authenticated as {string} with password {string}",
+    (userRole, password) => {
+        cy.log(`Authenticating as ${userRole}...`);
+        sendLoginRequest(userRole, password);
     }
 );
 
