@@ -4,6 +4,7 @@ const FILTERED_ELEMENT = '.oxd-main-menu';
 
 class AdminAccessPage {
     static visit() {
+        // Visit the Admin Page
         cy.visit(DASHBOARD);
     }
 
