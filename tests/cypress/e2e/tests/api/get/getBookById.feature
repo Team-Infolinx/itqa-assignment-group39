@@ -13,6 +13,12 @@ Feature: Get book by ID
     | user     |
 
 
+  Scenario: A user attempts to get a book without being authenticated
+    Given a user is not authenticated
+    When the user fetches the book details with the ID
+    Then the get by Id API should return a 401 status code
+
+
   Scenario Outline: Fetching a non-existent book by ID
     Given the user is authenticated as "<userRole>" with password "password"
     And a non-existent book ID is provided
