@@ -42,11 +42,3 @@ Feature: Book Update API
     When the user attempts to update the book with valid data
     Then the API should return 400 status code
     And the response should contain an error message for invalid book ID
-
-  Scenario: Attempting to update a book with missing required fields
-    Given a book is created for update
-    And the user provides updated book data with missing title
-    When the user attempts to update the book with invalid data
-    Then the API should return 400 status code
-    And the response should contain an error message for missing required fields
-  

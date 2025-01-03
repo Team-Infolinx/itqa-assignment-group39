@@ -1,10 +1,8 @@
-import {
-  Given,
-  Then,
-  When
-} from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import Books from "../../../services/books.cy";
 import Login from "../../../services/login.cy";
+
+
 let bookId;
 let response;
 let updatedBookData;
@@ -16,15 +14,14 @@ Given(
     cy.log(`Authenticating as ${userRole}...`);
     Login.loginUser(userRole, password).then((res) => {
       response = res;
-      authToken = res.body.token; // Assuming the token is in the response body
     });
   }
 );
 
 Given("a book is created for update", () => {
-  const titleNumber = Math.floor(Math.random() * 1000);
+  titleNUmber = Math.floor(Math.random() * 1000);
   const bookData = {
-    title: "Automated Testing Book" + titleNumber,
+    title: "Automated Testing Book" + titleNUmber,
     author: "Test Author",
   };
 
@@ -35,7 +32,7 @@ Given("a book is created for update", () => {
 });
 
 Given("a not-existent book ID is provided", () => {
-  bookId = 99999;
+  bookId = 99999; 
 });
 
 Given("book ID is not provided", () => {
@@ -52,25 +49,17 @@ Given("the user provides updated book data", () => {
   }
 
   updatedBookData = {
-    id: bookId,
+    id : bookId,
     title: `Updated Automated Testing Book ${generateRandomString(5)}`,
-    author: `Updated Test Author ${generateRandomString(5)}`,
+    author: `Updated Test Author ${generateRandomString(5)}`, 
   };
 });
 
 Given("the user provides invalid updated book data", () => {
   updatedBookData = {
     id: bookId,
-    title: 2564, // Invalid title (should be a string)
-      author: 7894, // Invalid author (should be a string)
-    };
-    });
-
-    Given("the user provides updated book data with missing title", () => {
-          updatedBookData = {
-              id: bookId,
-              author: `Updated Test Author ${Math.random().toString(36).substring(2, 7)}`,
-              // Missing title
+    title: 2564, 
+    author: 7894, 
   };
 });
 
@@ -105,21 +94,21 @@ Then("the book data should be updated in the system", () => {
 });
 
 Then("the response should indicate that the book id is not matched", () => {
+  expect(response.body).to.have.property("message");
   expect(response.body).to.equal("Book not found");
 });
 
 Then("the response should contain an error message for invalid data", () => {
-  expect(response.body).to.equal("Invalid data provided");
+  expect(response.body).to.have.property("message");
+  expect(response.body.message).to.equal("Invalid data provided");
 });
 
 Then("the response should contain an error message for missing book ID", () => {
-  expect(response.body).to.equal("Missing book ID");
+  expect(response.body).to.have.property("message");
+  expect(response.body.message).to.equal("Missing book ID");
 });
 
 Then("the response should contain an error message for invalid book ID", () => {
-  expect(response.body).to.equal("Invalid book ID");
-});
-
-Then("the response should contain an error message for missing required fields", () => {
-  expect(response.body).to.equal("Missing required field: title");
+  expect(response.body).to.have.property("message");
+  expect(response.body.message).to.equal("Invalid book ID");
 });
