@@ -14,7 +14,7 @@ Feature: Get all books
     | user     |
 
 
-  Scenario: Fetching all books when no books exist in the system
+  Scenario Outline: Fetching all books when no books exist in the system
     Given no books exist in the system
     And the user is authenticated as "<userRole>" with password "password"
     When the user fetches all books
