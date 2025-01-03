@@ -5,7 +5,7 @@ import Login from "../../../services/login.cy";
 let bookId;
 let response;
 
-Given("a user is not authenticated", () => {
+Given("a user is not authenticated for get API", () => {
   window.localStorage.removeItem("auth_token");
 });
 

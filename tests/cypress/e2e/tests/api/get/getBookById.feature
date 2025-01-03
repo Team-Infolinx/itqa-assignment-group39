@@ -14,7 +14,7 @@ Feature: Get book by ID
 
 
   Scenario: A user attempts to get a book without being authenticated
-    Given a user is not authenticated
+    Given a user is not authenticated for get API
     When the user fetches the book details with the ID
     Then the get by Id API should return a 401 status code
 
