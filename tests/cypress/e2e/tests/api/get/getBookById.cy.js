@@ -7,8 +7,9 @@ let response;
 
 Given(
   "the user is authenticated as {string} with password {string}",
-  (username, password) => {
-    Login.loginUser(username, password).then((res) => {
+  (userRole, password) => {
+    cy.log(`Authenticating as ${userRole}...`);
+    Login.loginUser(userRole, password).then((res) => {
       response = res;
     });
   }
