@@ -15,64 +15,71 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the repository
       - uses: actions/checkout@v4
 
-      # Step 1: Set up Node.js
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      # Step 2: Install dependencies (with `cd` into the tests folder)
+      # Step 3: Change to the tests directory
+      - name: Change working directory
+        working-directory: ./tests
+        run: echo "Switched to tests directory"
+
+      # Step 4: Install dependencies
       - name: Install dependencies
+        working-directory: ./tests
         run: |
-          cd tests  # Change to the 'tests' folder
-          npm ci    # Install dependencies from package-lock.json in 'tests' folder
-          # Install Cypress and any other dependencies for your tests
+          npm ci
+          # Install Cypress if not already installed
           npx cypress install
 
-      # Step 3: Set up Allure Report
+      # Step 5: Set up Allure commandline
       - name: Set up Allure commandline
-        run: |
-          cd tests  # Change to the 'tests' folder
-          npm install -g allure-commandline
+        working-directory: ./tests
+        run: npm install -g allure-commandline
 
-      # Step 4: Run Cypress tests (both UI and API)
+      # Step 6: Run Cypress tests
       - name: Run Cypress tests
+        working-directory: ./tests
         run: |
-          cd tests  # Change to the 'tests' folder
           npx cypress run --reporter mocha-allure-reporter
 
-      # Step 5: Upload the test results
+      # Step 7: Upload test results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: cypress-test-results
           path: |
-            tests/cypress/results/allure-report/
-            tests/cypress/results/*.json
+            ./tests/allure-results/
+            ./tests/results/*.json
 
   generate-report:
     needs: tests
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Check out the repository
       - uses: actions/checkout@v4
 
-      # Step 1: Download test results
+      # Step 2: Download test results
       - name: Download test results
         uses: actions/download-artifact@v3
         with:
           name: cypress-test-results
           path: results
 
-      # Step 2: Generate combined Allure report
+      # Step 3: Generate combined Allure report
       - name: Generate Allure Report
         run: |
           allure generate results/cypress-test-results -o results/allure-report --clean
 
-      # Step 3: Upload combined report
+      # Step 4: Upload combined report
       - name: Upload Allure Report
         uses: actions/upload-artifact@v3
         with:
