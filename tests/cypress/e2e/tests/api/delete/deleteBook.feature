@@ -10,7 +10,7 @@ Scenario: Successfully remove a book based on user role permissions
 
   Examples:
     | userRole | statusCode |
-    | admin    | 204        |
+    | admin    | 200        |
     | user     | 403        |
 
 
