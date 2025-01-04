@@ -5,6 +5,10 @@ import Login from "../../../services/login.cy";
 let bookId;
 let response;
 
+Given("a user is not authenticated for get API", () => {
+  window.localStorage.removeItem("auth_token");
+});
+
 Given("a valid book ID exists", () => {
   titleNUmber = Math.floor(Math.random() * 1000);
   const bookData = {

@@ -36,6 +36,14 @@ class Books {
   }
 
   deleteBook(bookId, authHeader) {
+    if (bookId === undefined || bookId === null) {
+      return cy.request({
+        method: "DELETE",
+        url: baseUrl + "/api/books",
+        headers: authHeader,
+        failOnStatusCode: false,
+      });
+    }
     return cy.request({
       method: "DELETE",
       url: baseUrl + "/api/books/" + bookId,
